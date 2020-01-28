@@ -1,0 +1,20 @@
+language: go
+dist: bionic
+services:
+  - docker
+go:
+  - 1.13.5
+env:
+  global:
+    - CONTAINER_IMAGE_REPO=darkowlzz
+    - K8S_REPO_VERSION=v1.17.0
+    - K8S_COMPONENT_NAME=kube-scheduler
+before_install:
+  - sudo apt-get install rsync -y
+script:
+  - bash build.sh
+deploy:
+  - provider: script
+    script: bash publish-image.sh
+    on:
+      tags: true
